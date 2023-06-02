@@ -20,7 +20,8 @@ let imgContainer = document.getElementById('img-container');
 let imgOne =document.getElementById('img-one');
 let imgTwo =document.getElementById('img-two');
 let imgThree =document.getElementById('img-three');
-
+let resultsBtn = document.getElementById('show-results');
+let resltsList = document.getElementById('result-container')
 
 function Product(name,img){
   this.name = name;
@@ -29,43 +30,66 @@ function Product(name,img){
   this.votes = 0;
 }
 
+// render new images that cannot be dupplicated
 function renderImg(){
   let imgOneIndex = randomIndex();
   let imgTwoIndex = randomIndex ();
   let imgThreeIndex = randomIndex ();
 
-  imgOne.src = productArray[randomIndex()].img;
-  imgTwo.src = productArray[randomIndex()].img;
-  imgThree.src = productArray[randomIndex()].img;
+  while (imgOneIndex === imgTwoIndex || imgOneIndex === imgThreeIndex || imgTwoIndex === imgThreeIndex){
+    imgOneIndex = randomIndex();
+    imgTwoIndex = randomIndex();
+    imgThreeIndex = randomIndex();
+  }
+  imgOne.src = productArray[imgOneIndex].img;
+  imgOne.title = productArray[imgOneIndex].name;
+  imgOne.alt = `this is an image of ${productArray[imgOneIndex].img}`;
+  imgTwo.src = productArray[imgTwoIndex].img;
+  imgTwo.title = productArray[imgTwoIndex].name;
+  imgTwo.alt = `this is an image of ${productArray[imgTwoIndex].img}`;
+  imgThree.src = productArray[imgThreeIndex].img;
+  imgThree.title = productArray[imgThreeIndex].name;
+  imgThree.alt = `this is an image of ${productArray[imgThreeIndex].img}`;
 
-  while (imgOne)
+  productArray[imgOneIndex].views++;
+  productArray[imgTwoIndex].views++;
+  productArray[imgThreeIndex].views++;
+
 }
 
 function randomIndex(){
-  return Math.floor(Math.random * productArray.length);
+  return Math.floor(Math.random() * productArray.length);
 }
 
 
-let bag = new Product('bag', 'img/bag.jpg');
-let banana = new Product('banana', 'img/banana.jpg');
-let bathroom = new Product('bathroom', 'img/bathroom.jpg');
-let boots = new Product('boots', 'img/boots.jpg');
-let breakfast = new Product('breakfast', 'img/breakfast.jpg');
-let bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
-let chair = new Product('chair', 'img/chair.jpg');
-let cthulhu = new Product('cthulhu', 'img/cthulhu.jpg');
-let dogDuck = new Product('dog-duck', 'img/dog-duck.jpg');
-let dragon = new Product('dragon', 'img/dragon.jpg');
-let pen = new Product('pen', 'img/pen.jpg');
-let petSweep = new Product('pet-sweep', 'img/pet-sweep.jpg');
-let scissors = new Product('scissors', 'img/scissors.jpg');
-let shark = new Product('shark', 'img/shark.jpg');
-let sweep = new Product('sweep', 'img/sweep.jpg');
-let tauntaun = new Product('tauntaun', 'img/tauntaun.jpg');
-let unicorn = new Product('unicorn', 'img/unicorn.jpg');
-let waterCan = new Product('water-can', 'img/water-can.jpg');
+// identify image clicked
+function handleImgClick(event){
+  let imgClicked = event.target.title;
+  for(let i=0; i< productArray.length; i++){
+    if(imgClicked === productArray[i].name){
+      productArray[i].votes++;
+    }
+  }
 
-productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan);
+  votingRounds--;
+  renderImg();
+  if(votingRounds === 0){
+    imgContainer.removeEventListener('click',handleImgClick);
+    
+  }
+}
+console.log(productArray);
+console.log(votingRounds);
+
+let productName = ['bag', 'banana','bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu','dogDuck', 'dragon', 'pen', 'petSweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'waterCan'];
+
+for (let i = 0; i< productName.length; i++){
+  productName[i] = new Product (productName[i], `img/${productName[i]}.jpg`);
+  productArray.push(productName[i]);
+}
 
 
 renderImg();
+
+imgContainer.addEventListener('click',handleImgClick);
+resultsBtn.addEventListener('click',handleShoWResults);
