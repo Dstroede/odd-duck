@@ -1,0 +1,27 @@
+body {
+    background-color: slategray;
+    width:1400px;
+    margin:auto;
+    color: azure;
+}
+section{
+    
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 10px;
+    
+}
+img {
+    border: 3px solid black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+div {
+  
+}
+button{
+    height: 50px;
+    width:40%;
+}
+
+    
