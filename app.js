@@ -21,7 +21,7 @@ let imgOne =document.getElementById('img-one');
 let imgTwo =document.getElementById('img-two');
 let imgThree =document.getElementById('img-three');
 let resultsBtn = document.getElementById('show-results');
-let resltsList = document.getElementById('result-container')
+let resultsContainer = document.getElementById('results-container');
 
 function Product(name,img){
   this.name = name;
@@ -31,10 +31,20 @@ function Product(name,img){
 }
 
 // render new images that cannot be dupplicated
+let indexArray= [];
+
 function renderImg(){
-  let imgOneIndex = randomIndex();
-  let imgTwoIndex = randomIndex ();
-  let imgThreeIndex = randomIndex ();
+  while (indexArray.length<16){
+    let randomNum = Math.floor(Math.random() * productArray.length);
+    if(!indexArray.includes(randomNum)){
+      indexArray.push(randomNum);
+    }
+  }
+
+  let imgOneIndex =indexArray.shift();
+  let imgTwoIndex =indexArray.shift();
+  let imgThreeIndex =indexArray.shift();
+
 
   while (imgOneIndex === imgTwoIndex || imgOneIndex === imgThreeIndex || imgTwoIndex === imgThreeIndex){
     imgOneIndex = randomIndex();
@@ -78,10 +88,13 @@ function handleImgClick(event){
     
   }
 }
-console.log(productArray);
-console.log(votingRounds);
 
-let productName = ['bag', 'banana','bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu','dogDuck', 'dragon', 'pen', 'petSweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'waterCan'];
+
+
+
+let productName = ['bag', 'banana','bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu','dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'water-can'];
+let productViews = [];
+let productVotes = [];
 
 for (let i = 0; i< productName.length; i++){
   productName[i] = new Product (productName[i], `img/${productName[i]}.jpg`);
@@ -89,7 +102,51 @@ for (let i = 0; i< productName.length; i++){
 }
 
 
+function handleShowResults(){
+  if( votingRounds === 0){
+for (let i = 0; i< productArray.length; i++){
+  productViews.push(productArray[i].views);
+  productVotes.push(productArray[i].votes);
+}
+resultsBtn.removeEventListener('click', handleShowResults);
+}
+}
+const chartConfig ={
+  type: 'bar',
+  data:{
+    labels:productName,
+    datasets:[{
+      lable: '# of Votes',
+      data:productVotes,
+      backgoundColor: 'white',
+      borderWidth: 1,
+    },
+    {
+      lable: '# of Views',
+      data:productViews,
+      backgoundColor: 'grey',
+      borderWidth: 1,
+    }
+    ]
+  },
+  options: {
+    plugins: {
+      customCanvasBackgroundColor:{
+        color: 'black',
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero:true
+      }
+    }
+  },
+  
+};
+new Chart(resultsContainer, chartConfig);
+console.log('chart config', chartConfig);
+
 renderImg();
 
 imgContainer.addEventListener('click',handleImgClick);
-resultsBtn.addEventListener('click',handleShoWResults);
+resultsBtn.addEventListener('click',handleShowResults);

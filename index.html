@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/reset.css" rel="stylesheet" type="text/css" />
     <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Odd Duck</title>
 </head>
 <body>
@@ -15,9 +16,11 @@
             <img id= img-one src="img/" alt="" height="200px">
             <img id= img-two src="img/" alt="" height="200px">
             <img id= img-three src="img/" alt="" height="200px">
-            <button id="show-results">See Results</button>
-            <ul id="results-container"></ul>
+            <div><button id="show-results">See Results</button>
+            </div>
         </section>
+        <div id="chart-container"><canvas width="15" height="5" id="results-container" > </canvas>
+    </div>
     </main>
     <script src="app.js"> </script>
 </body>
