@@ -95,6 +95,7 @@ function handleImgClick(event){
 let productName = ['bag', 'banana','bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu','dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'water-can'];
 let productViews = [];
 let productVotes = [];
+let productLabel = [];
 
 for (let i = 0; i< productName.length; i++){
   productName[i] = new Product (productName[i], `img/${productName[i]}.jpg`);
@@ -104,27 +105,29 @@ for (let i = 0; i< productName.length; i++){
 
 function handleShowResults(){
   if( votingRounds === 0){
-for (let i = 0; i< productArray.length; i++){
-  productViews.push(productArray[i].views);
-  productVotes.push(productArray[i].votes);
-}
-resultsBtn.removeEventListener('click', handleShowResults);
-}
+    for (let i = 0; i< productArray.length; i++){
+      productLabel.push(productArray[i].name);
+      productViews.push(productArray[i].views);
+      productVotes.push(productArray[i].votes);
+    }
+    new Chart(resultsContainer, chartConfig);
+    resultsBtn.removeEventListener('click', handleShowResults);
+  }
 }
 const chartConfig ={
   type: 'bar',
   data:{
-    labels:productName,
+    labels:productLabel,
     datasets:[{
       lable: '# of Votes',
       data:productVotes,
-      backgoundColor: 'white',
+      backgoundColor:	'rgb(255,255,255)',
       borderWidth: 1,
     },
     {
       lable: '# of Views',
       data:productViews,
-      backgoundColor: 'grey',
+      backgoundColor: 'rgb(255, 215, 0)',
       borderWidth: 1,
     }
     ]
@@ -132,7 +135,7 @@ const chartConfig ={
   options: {
     plugins: {
       customCanvasBackgroundColor:{
-        color: 'black',
+        color: 'white',
       }
     },
     scales: {
@@ -143,10 +146,8 @@ const chartConfig ={
   },
   
 };
-new Chart(resultsContainer, chartConfig);
-console.log('chart config', chartConfig);
+
 
 renderImg();
-
 imgContainer.addEventListener('click',handleImgClick);
 resultsBtn.addEventListener('click',handleShowResults);
