@@ -110,6 +110,7 @@ function handleShowResults(){
       productViews.push(productArray[i].views);
       productVotes.push(productArray[i].votes);
     }
+    new Chart(resultsContainer, chartConfig);
     resultsBtn.removeEventListener('click', handleShowResults);
   }
 }
@@ -120,13 +121,13 @@ const chartConfig ={
     datasets:[{
       lable: '# of Votes',
       data:productVotes,
-      backgoundColor: 'white',
+      backgoundColor:	'rgb(255,255,255)',
       borderWidth: 1,
     },
     {
       lable: '# of Views',
       data:productViews,
-      backgoundColor: 'grey',
+      backgoundColor: 'rgb(255, 215, 0)',
       borderWidth: 1,
     }
     ]
@@ -134,7 +135,7 @@ const chartConfig ={
   options: {
     plugins: {
       customCanvasBackgroundColor:{
-        color: 'black',
+        color: 'white',
       }
     },
     scales: {
@@ -145,10 +146,8 @@ const chartConfig ={
   },
   
 };
-new Chart(resultsContainer, chartConfig);
-console.log('chart config', chartConfig);
+
 
 renderImg();
-
 imgContainer.addEventListener('click',handleImgClick);
 resultsBtn.addEventListener('click',handleShowResults);
