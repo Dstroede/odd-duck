@@ -34,7 +34,7 @@ function Product(name,img){
 let indexArray= [];
 
 function renderImg(){
-  while (indexArray.length<16){
+  while (indexArray.length<6){
     let randomNum = Math.floor(Math.random() * productArray.length);
     if(!indexArray.includes(randomNum)){
       indexArray.push(randomNum);
@@ -45,12 +45,6 @@ function renderImg(){
   let imgTwoIndex =indexArray.shift();
   let imgThreeIndex =indexArray.shift();
 
-
-  while (imgOneIndex === imgTwoIndex || imgOneIndex === imgThreeIndex || imgTwoIndex === imgThreeIndex){
-    imgOneIndex = randomIndex();
-    imgTwoIndex = randomIndex();
-    imgThreeIndex = randomIndex();
-  }
   imgOne.src = productArray[imgOneIndex].img;
   imgOne.title = productArray[imgOneIndex].name;
   imgOne.alt = `this is an image of ${productArray[imgOneIndex].img}`;
@@ -119,22 +113,22 @@ const chartConfig ={
   data:{
     labels:productLabel,
     datasets:[{
-      lable: '# of Votes',
+      label: '# of Votes',
       data:productVotes,
-      backgoundColor:	'rgb(255,255,255)',
+      backgroundColor:	'black',
       borderWidth: 1,
     },
     {
-      lable: '# of Views',
+      label: '# of Views',
       data:productViews,
-      backgoundColor: 'rgb(255, 215, 0)',
+      backgroundColor: 'purple',
       borderWidth: 1,
     }
     ]
   },
   options: {
     plugins: {
-      customCanvasBackgroundColor:{
+      customcanvasBackgroundColor:{
         color: 'white',
       }
     },
