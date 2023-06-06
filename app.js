@@ -130,7 +130,7 @@ const chartConfig ={
     plugins: {
       customcanvasBackgroundColor:{
         color: 'white',
-      }
+      },
     },
     scales: {
       y: {
