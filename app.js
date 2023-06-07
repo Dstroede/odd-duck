@@ -34,7 +34,7 @@ function Product(name,img){
 let indexArray= [];
 
 function renderImg(){
-  while (indexArray.length<16){
+  while (indexArray.length<6){
     let randomNum = Math.floor(Math.random() * productArray.length);
     if(!indexArray.includes(randomNum)){
       indexArray.push(randomNum);
@@ -45,12 +45,6 @@ function renderImg(){
   let imgTwoIndex =indexArray.shift();
   let imgThreeIndex =indexArray.shift();
 
-
-  while (imgOneIndex === imgTwoIndex || imgOneIndex === imgThreeIndex || imgTwoIndex === imgThreeIndex){
-    imgOneIndex = randomIndex();
-    imgTwoIndex = randomIndex();
-    imgThreeIndex = randomIndex();
-  }
   imgOne.src = productArray[imgOneIndex].img;
   imgOne.title = productArray[imgOneIndex].name;
   imgOne.alt = `this is an image of ${productArray[imgOneIndex].img}`;
@@ -97,13 +91,25 @@ let productViews = [];
 let productVotes = [];
 let productLabel = [];
 
-for (let i = 0; i< productName.length; i++){
-  productName[i] = new Product (productName[i], `img/${productName[i]}.jpg`);
-  productArray.push(productName[i]);
+let previousProductArray= localStorage.getItem('ProductArray');
+
+if(previousProductArray){
+  productArray = JSON.parse(previousProductArray);
+  console.log('previous products ', productArray)
+}else{
+  for (let i = 0; i< productName.length; i++){
+    productName[i] = new Product (productName[i], `img/${productName[i]}.jpg`);
+    productArray.push(productName[i]);
+  }
+  console.log('totals', productArray)
 }
 
 
 function handleShowResults(){
+  let productArrayString = JSON.stringify(productArray);
+  localStorage.setItem('ProductArray', productArrayString);
+  
+
   if( votingRounds === 0){
     for (let i = 0; i< productArray.length; i++){
       productLabel.push(productArray[i].name);
@@ -119,24 +125,24 @@ const chartConfig ={
   data:{
     labels:productLabel,
     datasets:[{
-      lable: '# of Votes',
+      label: '# of Votes',
       data:productVotes,
-      backgoundColor:	'rgb(255,255,255)',
+      backgroundColor:	'black',
       borderWidth: 1,
     },
     {
-      lable: '# of Views',
+      label: '# of Views',
       data:productViews,
-      backgoundColor: 'rgb(255, 215, 0)',
+      backgroundColor: 'purple',
       borderWidth: 1,
     }
     ]
   },
   options: {
     plugins: {
-      customCanvasBackgroundColor:{
+      customcanvasBackgroundColor:{
         color: 'white',
-      }
+      },
     },
     scales: {
       y: {
