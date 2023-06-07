@@ -91,13 +91,25 @@ let productViews = [];
 let productVotes = [];
 let productLabel = [];
 
-for (let i = 0; i< productName.length; i++){
-  productName[i] = new Product (productName[i], `img/${productName[i]}.jpg`);
-  productArray.push(productName[i]);
+let previousProductArray= localStorage.getItem('ProductArray');
+
+if(previousProductArray){
+  productArray = JSON.parse(previousProductArray);
+  console.log('previous products ', productArray)
+}else{
+  for (let i = 0; i< productName.length; i++){
+    productName[i] = new Product (productName[i], `img/${productName[i]}.jpg`);
+    productArray.push(productName[i]);
+  }
+  console.log('totals', productArray)
 }
 
 
 function handleShowResults(){
+  let productArrayString = JSON.stringify(productArray);
+  localStorage.setItem('ProductArray', productArrayString);
+  
+
   if( votingRounds === 0){
     for (let i = 0; i< productArray.length; i++){
       productLabel.push(productArray[i].name);
